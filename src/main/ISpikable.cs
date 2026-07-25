@@ -4,14 +4,16 @@ using System.Collections.Generic;
 
 namespace ei8.Cortex.Coding.Spiker
 {
-    public interface ISpikable : INeurULized
+    public interface ISpikable : IneurUL
     {
         IDictionary<DateTime, FireInfo> FireHistory { get; }
 
-        void Initialize(Network? network, IEnumerable<MirrorConfig>? mirrorConfigs);
+        void Initialize(IEnumerable<MirrorConfig>? mirrorConfigs);
 
         TimeSpan RefractoryPeriod { get; set; }
 
         TimeSpan RelatedSpikesPeriod { get; set; }
+
+        void Spike(params Neuron[] neurons);
     }
 }

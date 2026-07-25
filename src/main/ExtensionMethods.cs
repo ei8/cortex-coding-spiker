@@ -1,10 +1,10 @@
 ﻿using ei8.Cortex.Coding.Mirrors;
 using ei8.Cortex.Coding.Model.Reflection;
-using neurUL.Common.Domain.Model;
 using NLog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -13,6 +13,17 @@ namespace ei8.Cortex.Coding.Spiker
     public static class ExtensionMethods
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        public static void AddReplaceItems(this Network original, params IneurUL[] neurULizedObjects) =>
+            original.AddReplaceItems(neurULizedObjects.Select(no => no.Network).ToArray());
+
+        public static void AddReplaceItems(this Network original, params Network[] networks)
+        {
+            foreach (var n in networks)
+                original.AddReplaceItems(n);
+        }
+
+        public static Neuron GetInterneuron(this Network value) => value.GetItems<Neuron>().Single();
 
         public static bool TryParseSensoryNeurons(
             this ISpikable spikable,
@@ -187,69 +198,6 @@ namespace ei8.Cortex.Coding.Spiker
                 result = default;
 
             return bResult;
-        }
-
-        public static Neuron CreateInputNeuron(this Network network, MirrorConfig mirrorConfig, float strengthToInterneurons, params Neuron[] interneurons)
-        {
-            AssertionConcern.AssertArgumentNotNull(mirrorConfig, nameof(mirrorConfig));
-
-            var result = network.CreateNeuron(mirrorConfig);
-
-            foreach (var interneuron in interneurons)
-                network.CreateTerminal(result, interneuron, NeurotransmitterEffect.Excite, strengthToInterneurons);
-
-            return result;
-        }
-
-        public static Neuron CreateRotationInterneuron(this Network network, Neuron rotateNeuron, Neuron directionNeuron, Neuron degreesNeuron)
-        {
-            var result = network.CreateNeuron();
-
-            network.CreateTerminal(result, rotateNeuron);
-            network.CreateTerminal(result, directionNeuron);
-            network.CreateTerminal(result, degreesNeuron);
-
-            return result;
-        }
-
-        public static Neuron CreateNeuron(
-            this Network network,
-            MirrorConfig mirrorConfig
-        )
-        {
-            AssertionConcern.AssertArgumentNotNull(mirrorConfig, nameof(mirrorConfig));
-
-            var result = Neuron.CreateTransient(Guid.NewGuid(), string.Join(',', mirrorConfig.Keys), mirrorConfig.Url, null);
-            network.AddReplace(result);
-            return result;
-        }
-
-        public static Neuron CreateNeuron(
-            this Network network
-        )
-        {
-            var result = Neuron.CreateTransient(Guid.NewGuid(), null, null, null);
-            network.AddReplace(result);
-            return result;
-        }
-
-        public static Terminal CreateTerminal(
-            this Network network,
-            Neuron presynapticNeuron,
-            Neuron postsynapticNeuron
-        ) => network.CreateTerminal(presynapticNeuron, postsynapticNeuron, NeurotransmitterEffect.Excite, 1f);
-
-        public static Terminal CreateTerminal(
-            this Network network,
-            Neuron presynapticNeuron,
-            Neuron postsynapticNeuron,
-            NeurotransmitterEffect effect,
-            float strength
-        )
-        {
-            var result = new Terminal(Guid.NewGuid(), presynapticNeuron.Id, postsynapticNeuron.Id, effect, strength);
-            network.AddReplace(result);
-            return result;
         }
 
         public static IDictionary<Guid, T> ConvertToNeuronValueMap<T>(this IEnumerable<T> values, IEnumerable<MirrorConfig> mirrorConfigs, Network network) where T : Enum
