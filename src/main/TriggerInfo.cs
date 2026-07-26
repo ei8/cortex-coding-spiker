@@ -1,5 +1,4 @@
-﻿using ei8.Cortex.Coding;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ei8.Cortex.Coding.Spiker

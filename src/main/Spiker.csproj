@@ -5,15 +5,14 @@
     <AssemblyName>ei8.Cortex.Coding.Spiker</AssemblyName>
     <RootNamespace>ei8.Cortex.Coding.Spiker</RootNamespace>
 	  <PackageId>ei8.Cortex.Coding.Spiker</PackageId>
-	  <PackageVersion>0.1.6</PackageVersion>
+	  <PackageVersion>0.1.7</PackageVersion>
 	  <Authors>Elmer Roderick Niem Bool</Authors>
 	  <Description>Cortex Coding Spiker</Description>
 	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	  <PackageReleaseNotes>Initial commit.</PackageReleaseNotes>
 	  <PackageTags>cortex coding spiker</PackageTags>
-	  <Version>0.1.6</Version>
+	  <Version>0.1.7</Version>
 	  <PackageLicenseUrl>https://www.gnu.org/licenses/agpl-3.0.en.html</PackageLicenseUrl>
-	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <LangVersion>12.0</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
