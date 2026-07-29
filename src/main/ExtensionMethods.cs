@@ -14,7 +14,7 @@ namespace ei8.Cortex.Coding.Spiker
                     concurrentDictionary.Remove(nfi.Key, out _);
         }
 
-        public static Neuron ValidateGet(this Network network, Guid id)
+        public static Neuron ValidateGet(this ReadOnlyNetwork network, Guid id)
         {
             if (network.TryGetById(id, out Neuron neuron))
                 return neuron;

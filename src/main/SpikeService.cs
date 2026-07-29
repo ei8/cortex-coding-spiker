@@ -17,7 +17,7 @@ namespace ei8.Cortex.Coding.Spiker
             TriggerInfo trigger,
             IEnumerable<FireInfo> reflexArc,
             SpikeService spikeService,
-            Network network,
+            ReadOnlyNetwork network,
             TimeSpan refractoryPeriod
         )
         {
@@ -29,7 +29,7 @@ namespace ei8.Cortex.Coding.Spiker
 
             public SpikeService SpikeService { get; } = spikeService;
             
-            public Network Network { get; } = network;
+            public ReadOnlyNetwork Network { get; } = network;
             
             public TimeSpan RefractoryPeriod { get; } = refractoryPeriod;
         }
@@ -47,7 +47,7 @@ namespace ei8.Cortex.Coding.Spiker
             spikeCount = value;
         }
 
-        public void Spike(IEnumerable<Neuron> targets, Network network, TimeSpan refractoryPeriod)
+        public void Spike(IEnumerable<Neuron> targets, ReadOnlyNetwork network, TimeSpan refractoryPeriod)
         {
             for (int i = 1; i <= this.spikeCount; i++)
             {
@@ -106,7 +106,7 @@ namespace ei8.Cortex.Coding.Spiker
 
                     if (state.Network != null)
                     {
-                        foreach (var t in state.Network.GetTerminals(state.Target.Id).ToList())
+                        foreach (var t in state.Network.GetPostsynapticTerminals(state.Target.Id).ToList())
                         {
                             Task.Run(() =>
                                 SpikeService.SpikeCore(

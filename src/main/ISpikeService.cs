@@ -11,6 +11,6 @@ namespace ei8.Cortex.Coding.Spiker
 
         void SetSpikeCount(int value);
 
-        void Spike(IEnumerable<Neuron> targets, Network network, TimeSpan refractoryPeriod);
+        void Spike(IEnumerable<Neuron> targets, ReadOnlyNetwork network, TimeSpan refractoryPeriod);
     }
 }
